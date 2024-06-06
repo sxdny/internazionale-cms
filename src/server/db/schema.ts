@@ -2,7 +2,11 @@
 // https://orm.drizzle.team/docs/sql-schema-declaration
 
 import { sql } from "drizzle-orm";
+
 import {
+  real,
+  boolean,
+  integer,
   index,
   pgTableCreator,
   serial,
@@ -32,3 +36,43 @@ export const posts = createTable(
     nameIndex: index("name_idx").on(example.name),
   })
 );
+
+export const clients = createTable(
+  "clients",
+  {
+    id: serial("id").primaryKey(),
+    name: varchar("name", { length: 256} ),
+    dni: varchar("dni", { length: 9 }),
+    email: varchar("email", { length: 255 }),
+    phone_number: integer("phone_number").default(0),
+    payment_method: varchar("payment_method", {
+      enum: ["cash", "card"]
+    }),
+    username: varchar("username", { length: 256 }),
+    password: varchar("password", { length: 256 }),
+    image: varchar("image")
+  }
+)
+
+export const rooms = createTable(
+  "rooms",
+  {
+    id: serial("id").primaryKey(),
+    name: varchar("name", { length: 256 }),
+    description: varchar("description", { length: 256 }),
+    capacity: integer("capacity").default(1),
+    type: varchar("type", {
+      enum: ["apartment", "studio"]
+    }),
+    state: boolean("state"),
+    price: real("price").default(0.0),
+    image: varchar("image")
+  }
+)
+
+export const reservations = createTable(
+  "reservations",
+  {
+    
+  }
+)
