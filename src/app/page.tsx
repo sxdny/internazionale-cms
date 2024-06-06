@@ -1,4 +1,6 @@
 import { db } from "~/server/db";
+
+export const dynamic = "force-dynamic";
 /*
 * Este componente se ejecuta en el servidor
 * por lo que el console.log no se verá en el navegador
