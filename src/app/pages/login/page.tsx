@@ -8,7 +8,6 @@ import { Button } from "../../../components/ui/button";
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -16,6 +15,7 @@ import {
 } from "../../../components/ui/form";
 import { Input } from "../../../components/ui/input";
 import Link from "next/link";
+import { getUserByUsername, getUserByUsernameAndPassword } from "./login";
 
 const formSchema = z.object({
   username: z.string().min(2).max(50),
@@ -33,10 +33,26 @@ export default function Login() {
   });
 
   // 2. Define a submit handler.
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    // Do something with the form values.
-    // ✅ This will be type-safe and validated.
+  async function onSubmit(values: z.infer<typeof formSchema>) {
     console.log(values);
+
+    const users = await getUserByUsernameAndPassword(
+      values.username,
+      values.password,
+    );
+
+    if (users.length === 0) {
+      console.log("User not found with this credentials...");
+      form.setError("username", {
+        message: "",
+      });
+      form.setError("password", {
+        message: "Incorrect username or password.",
+      });
+    } else {
+      console.log(`Welcome, ${users[0]?.name}!`);
+      console.log(users[0]);
+    }
   }
 
   return (
@@ -60,6 +76,7 @@ export default function Login() {
                   <FormControl>
                     <Input className="w-full" placeholder="" {...field} />
                   </FormControl>
+
                   <FormMessage />
                 </FormItem>
               )}
@@ -80,11 +97,14 @@ export default function Login() {
             />
             <div className="flex gap-2">
               <p>Don&apos;t have an account?</p>
-              <Link className="hover:underline underline-offset-4" href="/pages/register">
+              <Link
+                className="underline underline-offset-4"
+                href="/pages/register"
+              >
                 Register
               </Link>
             </div>
-            <Button type="submit">Submit</Button>
+            <Button type="submit">Log in</Button>
           </form>
         </Form>
       </div>
