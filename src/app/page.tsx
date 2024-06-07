@@ -7,11 +7,7 @@ import { Button } from "../components/ui/button";
 * se verá en la consola del warp.
 */
 
-export default async function HomePage() {
-
-  const posts = await db.query.posts.findMany();
-
-  console.log(posts);
+export default function HomePage() {
 
   return (
     <main className="flex min-h-screen justify-center items-center flex-col gap-5 p-5">
@@ -28,11 +24,7 @@ export default async function HomePage() {
         </Button>
       </header>
       <div>
-        {posts.map((post) => (
-          <div key={post.id}>
-              <p>{post.name}</p>
-          </div>
-        ))}
+        
       </div>
     </main>
   );

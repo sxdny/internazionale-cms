@@ -1,4 +1,5 @@
 import { Button } from "./ui/button";
+import Link from "next/link";
 
 export function Navbar() {
     return (
@@ -15,7 +16,11 @@ export function Navbar() {
                 <Button variant="link">
                     Ayuda
                 </Button>
-                <Button>Iniciar Sesión</Button>
+                <Button>
+                    <Link href="/pages/login">
+                        Iniciar Sesión
+                    </Link>
+                </Button>
             </div>
         </nav>
     )

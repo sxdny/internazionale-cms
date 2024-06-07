@@ -1,13 +1,12 @@
 // Example model schema from the Drizzle docs
 // https://orm.drizzle.team/docs/sql-schema-declaration
 
-import { sql } from "drizzle-orm";
-
+// Import the Drizzle ORM types
 import {
+  json,
   real,
   boolean,
   integer,
-  index,
   pgTableCreator,
   serial,
   timestamp,
@@ -22,21 +21,6 @@ import {
  */
 export const createTable = pgTableCreator((name) => `internazionale-cms_${name}`);
 
-export const posts = createTable(
-  "post",
-  {
-    id: serial("id").primaryKey(),
-    name: varchar("name", { length: 256 }),
-    createdAt: timestamp("created_at", { withTimezone: true })
-      .default(sql`CURRENT_TIMESTAMP`)
-      .notNull(),
-    updatedAt: timestamp("updatedAt", { withTimezone: true }),
-  },
-  (example) => ({
-    nameIndex: index("name_idx").on(example.name),
-  })
-);
-
 export const clients = createTable(
   "clients",
   {
@@ -50,6 +34,20 @@ export const clients = createTable(
     }),
     username: varchar("username", { length: 256 }),
     password: varchar("password", { length: 256 }),
+    image: varchar("image")
+  }
+)
+
+export const users = createTable(
+  "users",
+  {
+    id: serial("id").primaryKey(),
+    name: varchar("name", { length: 256 }),
+    username: varchar("username", { length: 256 }),
+    password: varchar("password", { length: 256 }),
+    role: varchar("role", {
+      enum: ["admin", "user"]
+    }),
     image: varchar("image")
   }
 )
@@ -73,6 +71,15 @@ export const rooms = createTable(
 export const reservations = createTable(
   "reservations",
   {
-    
+    id: serial("id").primaryKey(),
+    room_id: integer("room_id").references(() => rooms.id,),
+    client_id: integer("client_id").references(() => clients.id),
+    capacity: integer("capacity").default(1),
+    check_in: timestamp("check_in", { withTimezone: false }),
+    check_out: timestamp("check_out", { withTimezone: false }),
+    initial_price: real("initial_price").default(0.0),
+    final_price: real("final_price").default(0.0),
+    state: boolean("state"),
+    services: json("services")
   }
 )
