@@ -3,7 +3,6 @@
 import { db } from "~/server/db";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
-import { toast } from "sonner";
 
 export async function getAllUsers() {
     return await db.query.users.findMany();

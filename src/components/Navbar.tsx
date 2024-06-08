@@ -8,7 +8,7 @@ export async function Navbar() {
     return (
         <nav className="flex border-b justify-between p-5 bg-slate-50">
             <div>
-                <Button className="hover:no-underline" variant="link">
+                <Button className="hover:no-underline pl-0" variant="link">
                     <Link href="/">
                     <h1 className="text-xl">Internazionale</h1>
                     </Link>
