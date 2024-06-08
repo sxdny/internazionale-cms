@@ -3,6 +3,7 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
+import { toast } from "sonner";
 
 import { Button } from "../../../components/ui/button";
 import {
@@ -15,7 +16,9 @@ import {
 } from "../../../components/ui/form";
 import { Input } from "../../../components/ui/input";
 import Link from "next/link";
-import { getUserByUsername, getUserByUsernameAndPassword } from "./login";
+
+import { getUserByUsernameAndPassword } from "./login";
+import { setCookie, checkCookie } from "./login";
 
 const formSchema = z.object({
   username: z.string().min(2).max(50),
@@ -42,7 +45,7 @@ export default function Login() {
     );
 
     if (users.length === 0) {
-      console.log("User not found with this credentials...");
+      toast.error("Incorrect username or password.");
       form.setError("username", {
         message: "",
       });
@@ -52,6 +55,15 @@ export default function Login() {
     } else {
       console.log(`Welcome, ${users[0]?.name}!`);
       console.log(users[0]);
+      toast.success(`Welcome, ${users[0]?.name}!`);
+
+      try {
+        await setCookie(users[0]!.id);
+        const cookie = await checkCookie();
+        console.log(cookie);
+      } catch (error) {
+        console.error(error);
+      }
     }
   }
 

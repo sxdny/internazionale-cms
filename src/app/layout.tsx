@@ -1,5 +1,6 @@
 import "~/styles/globals.css";
 import { Navbar } from "~/components/Navbar";
+import { Toaster } from "~/components/ui/sonner";
 
 
 import { GeistSans } from "geist/font/sans";
@@ -20,6 +21,7 @@ export default function RootLayout({
       <body className="flex flex-col h-screen">
         <Navbar />
         {children}
+        <Toaster />
       </body>
     </html>
   );
